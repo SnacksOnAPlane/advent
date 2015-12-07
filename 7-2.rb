@@ -2,9 +2,11 @@ require 'pry'
 
 $wires = {}
 
-File.readlines("7-1.data").each do |line|
-  op, wire = line.split(' -> ')
-  $wires[wire.chomp] = op
+def read_file
+  File.readlines("7-1.data").each do |line|
+    op, wire = line.split(' -> ')
+    $wires[wire.chomp] = op
+  end
 end
 
 def get_value(wire)
@@ -37,5 +39,8 @@ def get_value(wire)
   return $wires[wire]
 end
 
-$wires['b'] = 956
+read_file
+tmp_val = get_value('a')
+read_file
+$wires['b'] = tmp_val
 puts get_value('a')
