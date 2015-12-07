@@ -2,48 +2,20 @@ house_grid = Hash.new { |h,k| h[k] = Hash.new(0) }
 
 x = 0
 y = 0
-rsx = 0
-rsy = 0
 
 house_grid[x][y] += 1
-house_grid[rsx][rsy] += 1
-
-rs = false
-
 File.readlines("3-1.data").each do |line|
   line.chars.each do |c|
     if c == '^'
-      if rs
-        rsy += 1
-      else
-        y += 1
-      end
+      y += 1
     elsif c == 'v'
-      if rs
-        rsy -= 1
-      else
-        y -= 1
-      end
+      y -= 1
     elsif c == '>'
-      if rs
-        rsx += 1
-      else
-        x += 1
-      end
+      x += 1
     elsif c == '<'
-      if rs
-        rsx -= 1
-      else
-        x -= 1
-      end
+      x -= 1
     end
-
-    if rs
-      house_grid[rsx][rsy] += 1
-    else
-      house_grid[x][y] += 1
-    end
-    rs = !rs
+    house_grid[x][y] += 1
   end
 end
 
