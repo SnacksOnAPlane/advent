@@ -1,5 +1,3 @@
-require 'pry'
-
 sue = {
   children: 3,
   cats: 7,
@@ -28,18 +26,13 @@ end
 $data.each do |name, items|
   her = true
   items.each do |item, num|
+    sue_num = sue[item.to_sym]
     if ['cats','trees'].include? item
-      if sue[item.to_sym] >= num
-        her = false
-      end
+      her = false if sue_num >= num
     elsif ['pomeranians','goldfish'].include? item
-      if sue[item.to_sym] <= num
-        her = false
-      end
+      her = false if sue_num <= num
     else
-      if sue[item.to_sym] != num
-        her = false
-      end
+      her = false if sue[item.to_sym] != num
     end
   end
   puts name if her
