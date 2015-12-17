@@ -11,13 +11,6 @@ def find_combinations(containers, size)
   elsif size < 0
     return false
   end
-  if containers.length == 1
-    if containers[0] == size
-      return [[containers[0]]]
-    else
-      return false
-    end
-  end
   retme = []
   containers.each_with_index do |c, i|
     combos = find_combinations(containers[i+1..-1], size - c)
@@ -32,5 +25,6 @@ def find_combinations(containers, size)
 end
 
 combos = find_combinations(container_sizes, 150)
+puts combos.length
 min_containers = combos.map { |c| c.length }.min
 puts combos.select { |c| c.length == min_containers }.length
