@@ -1,11 +1,11 @@
 require 'pry'
 require 'set'
 
-$repls = Hash.new {|h,k| h[k] = Array.new }
+$repls = {}
 
 File.readlines("19.data").each do |line|
   mol, repl = line.chomp.split(" => ")
-  $repls[repl.split(/(?=[A-Z])/).join("-")] << mol
+  $repls['-' + repl.split(/(?=[A-Z])/).join("-") + '-'] = "-#{mol}-"
 end
 
 start = "CRnSiRnCaPTiMgYCaPTiRnFArSiThFArCaSiThSiThPBCaCaSiRnSiRnTiTiMgArPBCaPMgYPTiRnFArFArCaSiRnBPMgArPRnCaPTiRnFArCaSiThCaCaFArPBCaCaPTiTiRnFArCaSiRnSiAlYSiThRnFArArCaSiRnBFArCaCaSiRnSiThCaCaCaFYCaPTiBCaSiThCaSiThPMgArSiRnCaPBFYCaCaFArCaCaCaCaSiThCaSiRnPRnFArPBSiThPRnFArSiRnMgArCaFYFArCaSiRnSiAlArTiTiTiTiTiTiTiRnPMgArPTiTiTiBSiRnSiAlArTiTiRnPMgArCaFYBPBPTiRnSiRnMgArSiThCaFArCaSiThFArPRnFArCaSiRnTiBSiThSiRnSiAlYCaFArPRnFArSiThCaFArCaCaSiThCaCaCaSiRnPRnCaFArFYPMgArCaPBCaPBSiRnFYPBCaFArCaSiAl"
@@ -42,21 +42,26 @@ def possibles(input)
   possibilities
 end
 
-inputs = ['-' + start.split(/(?=[A-Z])/).join("-") + '-']
+def replace_longest_match(input)
+  $repls.keys.sort_by { |k| -k.length }.each do |k|
+    if input.include? k
+      puts "#{k} -> #{$repls[k]}"
+      input[k] = $repls[k]
+      return input
+    end
+  end
+  input
+end
+
+input = '-' + start.split(/(?=[A-Z])/).join("-") + '-'
 
 i = 0
 while true
-  new_inputs = Set.new
   i += 1
-  inputs.to_a.each do |input|
-    puts "#{input}"
-    ps = possibles(input)
-    new_inputs = new_inputs + ps
-    ps.each do |p|
-      if p == '-e-'
-        raise "got it at #{i}"
-      end
-    end
+  input = replace_longest_match(input)
+  puts input
+  if input == '-e-'
+    puts i
+    break
   end
-  inputs = new_inputs
 end
